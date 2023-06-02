@@ -23,6 +23,10 @@
 // @tailwind utilities;
 
 //npm run dev
+// npm install -D @tailwindcss/forms
+
+// npm install -D prettier prettier-plugin-tailwindcss
+
 
 function App() {
   return (
