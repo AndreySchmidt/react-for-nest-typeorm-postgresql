@@ -16,6 +16,9 @@ export const categoriesAction = async ({ request }: any) => {
       return null;
     }
     case "PATCH": {
+      const formData = await request.formData();
+      const category = { id: formData.get("id"), title: formData.get("title") };
+      await instance.patch(`/categories/category/${category.id}`, category);
       return null;
     }
     case "DELETE": {
@@ -33,8 +36,10 @@ export const categoryLoader = async () => {
 };
 
 const Categories: FC = () => {
+  const [categoryId, setCategoryId] = useState<number>(0);
   const categories = useLoaderData() as ICategory[];
-  const [visibleMadal, setVisibleModal] = useState<boolean>(false);
+  const [visibleModal, setVisibleModal] = useState<boolean>(false);
+  const [isEdit, setIsEdit] = useState<boolean>(false);
 
   return (
     <>
@@ -48,7 +53,13 @@ const Categories: FC = () => {
             >
               {category.title}
               <div className="absolute bottom-0 left-0 right-0 top-0 hidden items-center justify-between rounded-lg bg-black/90 px-3 group-hover:flex">
-                <button>
+                <button
+                  onClick={() => {
+                    setIsEdit(true);
+                    setVisibleModal(true);
+                    setCategoryId(category.id);
+                  }}
+                >
                   <AiFillEdit />
                 </button>
                 <Form className="flex" method="delete" action="/categories">
@@ -71,8 +82,16 @@ const Categories: FC = () => {
         </button>
       </div>
 
-      {visibleMadal && (
+      {visibleModal && (
         <CategoryModal type="post" setVisibleModal={setVisibleModal} />
+      )}
+
+      {visibleModal && isEdit && (
+        <CategoryModal
+          type="patch"
+          id={categoryId}
+          setVisibleModal={setVisibleModal}
+        />
       )}
     </>
   );

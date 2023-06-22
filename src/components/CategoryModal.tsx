@@ -28,6 +28,7 @@ export const CategoryModal: FC<ICategoryModal> = ({
             name="title"
             placeholder="title"
           />
+          <input type="hidden" name="id" value={id} />
         </label>
         <div className="flex items-center gap-2">
           <button className="btn btn-green" type="submit">
