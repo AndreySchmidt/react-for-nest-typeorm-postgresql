@@ -19,6 +19,9 @@ export const categoriesAction = async ({ request }: any) => {
       return null;
     }
     case "DELETE": {
+      const formData = await request.formData();
+      const categoryId = formData.get("id");
+      await instance.delete(`/categories/category/${categoryId}`);
       return null;
     }
   }
@@ -49,7 +52,7 @@ const Categories: FC = () => {
                   <AiFillEdit />
                 </button>
                 <Form className="flex" method="delete" action="/categories">
-                  <input type="hidden" value={category.id} />
+                  <input name="id" type="hidden" value={category.id} />
                   <button type="submit">
                     <AiFillCloseCircle />
                   </button>
