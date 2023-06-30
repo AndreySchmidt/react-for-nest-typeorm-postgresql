@@ -19,15 +19,26 @@ export interface IResponseUserData {
   user: IResponseUser;
 }
 
+export interface ITransaction {
+  id: number;
+  type: string;
+  title: string;
+  amount: number;
+  createdAt: string;
+  updatedAt: string;
+  category: ICategory;
+}
+
 export interface ICategory {
   type: string;
   title: string;
   id: number;
   createdAt: string;
   updatedAt: string;
-  transactions: [];
+  transactions?: [];
 }
 
 export interface IResponseTransactionLoader {
   categories: ICategory[];
+  transactions: ITransaction[];
 }
