@@ -1,5 +1,19 @@
 import { FC } from "react";
 import TransactionForm from "../components/TransactionForm";
+import { instance } from "../api/axios.api";
+import { ICategory } from "../types/types";
+
+export const transactionLoader = async () => {
+  const categories = await instance.get<ICategory[]>("/categories");
+
+  const data = {
+    categories: categories.data,
+    transactions: "",
+  };
+
+  return data;
+};
+export const transactionAction = async ({ request }: any) => {};
 
 const Transactions: FC = () => {
   return (

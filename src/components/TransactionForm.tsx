@@ -1,8 +1,13 @@
-import { FC } from "react";
+import { FC, useState } from "react";
 import { FaPlus } from "react-icons/fa";
-import { Form } from "react-router-dom";
+import { Form, useLoaderData } from "react-router-dom";
+import { IResponseTransactionLoader } from "../types/types";
+import { CategoryModal } from "./CategoryModal";
 
 const TransactionForm: FC = () => {
+  const { categories } = useLoaderData() as IResponseTransactionLoader;
+  const [visibleModal, setVisibleModal] = useState(false);
+
   return (
     <div className="rounded-md bg-slate-800 p-4">
       <Form className="grid gap-2" method="post" action="/transactions">
@@ -26,18 +31,34 @@ const TransactionForm: FC = () => {
             required
           />
         </label>
-        <label htmlFor="category" className="grid">
+
+        {categories.length ? (
+          <label htmlFor="category" className="grid">
+            <span>Category</span>
+            <select name="category" className="input border-slate-700" required>
+              {categories.map((category, index) => (
+                <option key={index} value={category.id}>
+                  {category.title}
+                </option>
+              ))}
+            </select>
+          </label>
+        ) : (
+          <h1 className="mt-1 text-red-300">No categories</h1>
+        )}
+
+        {/* <label htmlFor="category" className="grid">
           <span>Category</span>
           <select name="category" className="input border-slate-700" required>
             <option value="1">Salary</option>
             <option value="2">Gift</option>
             <option value="3">Grocery</option>
           </select>
-        </label>
+        </label> */}
 
         <button
-          // onClick={() => setVisibleModal(true)}
-          className="mt-2 flex max-w-fit items-center gap-2 text-white/50 hover:text-white"
+          onClick={() => setVisibleModal(true)}
+          className="flex max-w-fit items-center gap-2 text-white/50 hover:text-white"
         >
           <FaPlus />
           <span>Manage categories:</span>
@@ -66,6 +87,10 @@ const TransactionForm: FC = () => {
 
         <button className="btn btn-green mt-2 max-w-fit">Submit</button>
       </Form>
+
+      {visibleModal && (
+        <CategoryModal type="post" setVisibleModal={setVisibleModal} />
+      )}
     </div>
   );
 };
