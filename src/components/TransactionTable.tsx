@@ -5,7 +5,7 @@ import { FaTrash } from "react-icons/fa";
 import { Form, useLoaderData } from "react-router-dom";
 import { IResponseTransactionLoader, ITransaction } from "../types/types";
 import { formateDate } from "../helpers/date.helper";
-import { formatToUSD } from "../helpers/currency.helper.";
+import { formatToUSD } from "../helpers/currency.helper";
 import { instance } from "../api/axios.api";
 import ReactPaginate from "react-paginate";
 

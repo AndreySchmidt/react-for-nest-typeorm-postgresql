@@ -9,7 +9,7 @@ import {
 import { toast } from "react-toastify";
 import TransactionTable from "../components/TransactionTable";
 import { useLoaderData } from "react-router-dom";
-import { formatToUSD } from "../helpers/currency.helper.";
+import { formatToUSD } from "../helpers/currency.helper";
 import Chart from "../components/Chart";
 
 export const transactionLoader = async () => {
