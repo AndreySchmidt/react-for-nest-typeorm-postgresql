@@ -78,7 +78,7 @@ const Transactions: FC = () => {
       </div>
 
       <div className="my-5">
-        <TransactionTable />
+        <TransactionTable limit={5} />
       </div>
     </>
   );
