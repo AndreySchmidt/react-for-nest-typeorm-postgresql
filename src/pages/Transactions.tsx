@@ -1,21 +1,32 @@
 import { FC } from "react";
 import TransactionForm from "../components/TransactionForm";
 import { instance } from "../api/axios.api";
-import { ICategory } from "../types/types";
+import {
+  ICategory,
+  IResponseTransactionLoader,
+  ITransaction,
+} from "../types/types";
 import { toast } from "react-toastify";
 import TransactionTable from "../components/TransactionTable";
+import { useLoaderData } from "react-router-dom";
+import { formatToUSD } from "../helpers/currency.helper.";
 
 export const transactionLoader = async () => {
   const categories = await instance.get<ICategory[]>("/categories");
-  const transactions = await instance.get("/transactions");
+  const transactions = await instance.get<ITransaction[]>("/transactions");
+  const totalIncome = await instance.get<number>("/transactions/income/find");
+  const totalExpense = await instance.get<number>("/transactions/expense/find");
 
   const data = {
     categories: categories.data,
     transactions: transactions.data,
+    totalIncome: totalIncome.data,
+    totalExpense: totalExpense.data,
   };
 
   return data;
 };
+
 export const transactionAction = async ({ request }: any) => {
   switch (request.method) {
     case "POST": {
@@ -46,6 +57,9 @@ export const transactionAction = async ({ request }: any) => {
 };
 
 const Transactions: FC = () => {
+  const { totalExpense, totalIncome } =
+    useLoaderData() as IResponseTransactionLoader;
+
   return (
     <>
       <div className="mt-4 grid grid-cols-3 items-start gap-4">
@@ -59,7 +73,7 @@ const Transactions: FC = () => {
                 Total income:
               </p>
               <p className="mt-2 rounded-sm bg-green-600 p-1 text-center">
-                1000$
+                {formatToUSD.format(totalIncome)}
               </p>
             </div>
 
@@ -68,7 +82,7 @@ const Transactions: FC = () => {
                 Total expense:
               </p>
               <p className="mt-2 rounded-sm bg-red-500 p-1 text-center">
-                1000$
+              {formatToUSD.format(totalExpense)}
               </p>
             </div>
           </div>
