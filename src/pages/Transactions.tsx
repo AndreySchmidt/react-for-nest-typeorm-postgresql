@@ -10,6 +10,7 @@ import { toast } from "react-toastify";
 import TransactionTable from "../components/TransactionTable";
 import { useLoaderData } from "react-router-dom";
 import { formatToUSD } from "../helpers/currency.helper.";
+import Chart from "../components/Chart";
 
 export const transactionLoader = async () => {
   const categories = await instance.get<ICategory[]>("/categories");
@@ -82,12 +83,14 @@ const Transactions: FC = () => {
                 Total expense:
               </p>
               <p className="mt-2 rounded-sm bg-red-500 p-1 text-center">
-              {formatToUSD.format(totalExpense)}
+                {formatToUSD.format(totalExpense)}
               </p>
             </div>
           </div>
 
-          <>Chart</>
+          <>
+            <Chart totalExpense={totalExpense} totalIncome={totalIncome} />
+          </>
         </div>
       </div>
 
